@@ -20,36 +20,38 @@ const Login = () => {
 		try {
 			const { data } = await axios.post("/api/login", { email, password, code });
 			if (data.success) {
-				const whitelist = await axios.get(
-					`/api/whitelist?username=${data.data.user.username}`
-				);
+				// const whitelist = await axios.get(
+				// 	`/api/whitelist?username=${data.data.user.username}`
+				// );
+				//
+				// if (whitelist.data.info?.banned) {
+				// 	toast.error("I don't like you, fuck off", {
+				// 		position: "top-center",
+				// 		toastId: "banned",
+				// 		progress: 1,
+				// 		closeOnClick: false,
+				// 	});
+				// } else {
+				// 	const now = new Date().getTime();
+				// 	const ends = Date.parse(whitelist.data.ends);
+				// 	whitelist.data.info
+				// 		? setUser((_) => {
+				// 				const expired = now > ends;
+				// 				return {
+				// 					...data.data,
+				// 					info: {
+				// 						transfers: whitelist.data.info.transfers || 0,
+				// 						allowed: expired ? [] : whitelist.data.info.allowed || [],
+				// 						...(!expired && {
+				// 							ends: Math.floor((ends - now) / (1000 * 3600 * 24)),
+				// 						}), //if not expired, add "ends"
+				// 					},
+				// 				};
+				// 		  })
+				// 		:  });
+				// }
 
-				if (whitelist.data.info?.banned) {
-					toast.error("I don't like you, fuck off", {
-						position: "top-center",
-						toastId: "banned",
-						progress: 1,
-						closeOnClick: false,
-					});
-				} else {
-					const now = new Date().getTime();
-					const ends = Date.parse(whitelist.data.ends);
-					whitelist.data.info
-						? setUser((_) => {
-								const expired = now > ends;
-								return {
-									...data.data,
-									info: {
-										transfers: whitelist.data.info.transfers || 0,
-										allowed: expired ? [] : whitelist.data.info.allowed || [],
-										...(!expired && {
-											ends: Math.floor((ends - now) / (1000 * 3600 * 24)),
-										}), //if not expired, add "ends"
-									},
-								};
-						  })
-						: setUser({ ...data.data, info: { allowed: [] } });
-				}
+				setUser({ ...data.data, info: { allowed: ['packmanager', 'mintsearch', 'history', 'transfer', 'cardlister', 'vip'] }});
 				setLoading(false);
 			}
 		} catch (err) {
