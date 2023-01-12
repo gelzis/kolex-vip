@@ -29,7 +29,7 @@
 	"scripts": {
 		"dev": "explorer http://localhost:3000 & next dev",
 		"build": "next build",
-		"start": "next start",
+		"start": "next start -p 5020",
 		"lint": "next lint"
 	},
 	"browserslist": {
