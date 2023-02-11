@@ -51,7 +51,7 @@ const Login = () => {
 				// 		:  });
 				// }
 
-				setUser({ ...data.data, info: { allowed: ['packmanager', 'mintsearch', 'history', 'transfer', 'cardlister', 'vip'] }});
+				setUser({ ...data.data, info: { allowed: ['trades', 'packmanager', 'mintsearch', 'history', 'transfer', 'cardlister', 'vip'] }});
 				setLoading(false);
 			}
 		} catch (err) {
