@@ -12,10 +12,12 @@ import fixDecimal from "utils/NumberUtils";
 const ScanResult = React.memo(
 	({
 		scanResults,
+		me,
 		user,
 		collection,
 		templates,
 		ownedItems,
+		ownedItemsSearchedUser,
 		isSelfScan,
 		singleUserSearch,
 	}) => {
@@ -25,6 +27,12 @@ const ScanResult = React.memo(
 			.toString();
 		const [filterMethod, setFilterMethod] = useState("all");
 		const strippedResults = scanResults.map((result) => {
+			let ownedItemList = ownedItems;
+			// for my own cards show delta against the searched user
+			if (me.username === result.owner) {
+				ownedItemList = ownedItemsSearchedUser;
+			}
+
 			const ownedItem = sortBy(ownedItems, ["mintBatch", "mintNumber"]).find(
 				(own) => own.templateId === result.templateId
 			);

@@ -18,6 +18,7 @@ const Scanner = () => {
 	const [scanResults, setScanResults] = useState([]);
 	const [collectionTemplates, setCollectionTemplates] = useState({});
 	const [ownedItems, setOwnedItems] = useState([]);
+	const [ownedItemsSearchedUser, setOwnedItemsSearchedUser] = useState([]);
 	const [loading, setLoading] = useState(false);
 
 	const singleUserSearch = selectedUsers.length === 1;
@@ -60,6 +61,8 @@ const Scanner = () => {
 				)
 			);
 
+		let otherUserSet = false
+
 		// for (const selectedUser of selectedUsers) {
 		selectedUsers.forEach(async (selectedUser) => {
 			if (selectedUser.username !== user.user.username) {
@@ -67,6 +70,21 @@ const Scanner = () => {
 					selectedUser.id,
 					selectedCollection.collection.id
 				);
+
+				if (!otherUserSet && selectedUsers.length === 2) {
+					setOwnedItemsSearchedUser(
+						//pick the best set
+						sortBy(
+							[...data.cards, ...data.stickers].map((item) =>
+								pickObj(item, selectedCollection, selectedUser.username)
+							),
+							["mintBatch", "mintNumber"]
+						)
+					);
+
+					otherUserSet = true;
+				}
+
 				setScanResults((prev) => [
 					...prev,
 					...[...data.cards, ...data.stickers].map((item) =>
@@ -177,8 +195,10 @@ const Scanner = () => {
 							scanResults={scanResults}
 							templates={collectionTemplates}
 							user={selectedUsers}
+							me={user.user}
 							collection={selectedCollection}
 							ownedItems={ownedItems}
+							ownedItemsSearchedUser={ownedItemsSearchedUser}
 							isSelfScan={isSelfScan}
 							singleUserSearch={singleUserSearch}
 						/>
